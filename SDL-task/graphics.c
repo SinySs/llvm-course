@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-#include <stdbool.h>
+#include <stdlib.h>
 #include "graphics.h"
 #include <assert.h>
 
@@ -60,4 +60,9 @@ void put_pixel(int x, int y, int color) {
     }
     SDL_RenderDrawPoint(renderer, x, y);
     ticks = SDL_GetTicks();
+}
+
+int sim_rand()
+{
+    return rand();
 }

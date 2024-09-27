@@ -9,3 +9,4 @@ void put_pixel(int x, int y, int color);
 void sim_init();
 void sim_exit();
 void app();
+int sim_rand();

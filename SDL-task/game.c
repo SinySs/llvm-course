@@ -1,12 +1,12 @@
-#include <stdlib.h>
-#include <stdbool.h>
 #include "graphics.h"
 
+void swap_arrays(int **arr_1, int **arr_2) {
+    int *tmp = *arr_1;
+    *arr_1 = *arr_2;
+    *arr_2 = tmp;
+}
 
-static int grid[GRID_WIDTH * GRID_HEIGHT];
-static int new_grid[GRID_WIDTH * GRID_HEIGHT];
-
-int count_neighbors(int x, int y) {
+int count_neighbors(int x, int y, int grid[GRID_WIDTH * GRID_HEIGHT]) {
     int count = 0;
     for (int dy = -1; dy <= 1; dy++) {
         for (int dx = -1; dx <= 1; dx++) {
@@ -19,10 +19,12 @@ int count_neighbors(int x, int y) {
     return count;
 }
 
-void update_grid() {
+void update_grid(int *grid_ptr[GRID_WIDTH * GRID_HEIGHT], int *new_grid_ptr[GRID_WIDTH * GRID_HEIGHT]) {
+    int *grid = *grid_ptr;
+    int *new_grid = *new_grid_ptr;
     for (int y = 0; y < GRID_HEIGHT; y++) {
         for (int x = 0; x < GRID_WIDTH; x++) {
-            int neighbors = count_neighbors(x, y);
+            int neighbors = count_neighbors(x, y, grid);
             int idx = y * GRID_WIDTH + x;
 
             if (grid[idx]) {
@@ -33,24 +35,28 @@ void update_grid() {
         }
     }
 
-    for (int i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {
-        grid[i] = new_grid[i];
-    }
+    swap_arrays(grid_ptr, new_grid_ptr);
 }
 
-void init_grid() {
+void init_grid(int grid[GRID_WIDTH * GRID_HEIGHT]) {
     for (int i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {
-        grid[i] = rand() % 2;  
+        grid[i] = sim_rand() % 2;  
     }
 }
 
 void app() {
-    init_grid();  
+    int grid[GRID_WIDTH * GRID_HEIGHT];
+    int new_grid[GRID_WIDTH * GRID_HEIGHT];
+    int *grid_ptr = grid;
+    int *new_grid_ptr = new_grid;
+    
+    init_grid(grid_ptr);  
 
-    bool running = true;
+    int running = 1;
 
     while (running) {
-        update_grid();
+        update_grid(&grid_ptr, &new_grid_ptr);
+        //swap_arrays(&grid_ptr, &new_grid_ptr);
         for (int y = 0; y < GRID_HEIGHT; y++) {
             for (int x = 0; x < GRID_WIDTH; x++) {
                 put_pixel(x, y, grid[y * GRID_WIDTH + x]);
