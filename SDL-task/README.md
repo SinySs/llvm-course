@@ -6,9 +6,10 @@ clang version 10.0.0-4ubuntu1
 
 ## Usage
 ```
-clang main.c game.c graphics.c  -lSDL2 -I/usr/include/SDL2
+clang main.c game.cpp graphics.cpp  -lSDL2 -I/usr/include/SDL2
+
 ```
 or 
 ```
-clang main.c game.c graphics.c  -lSDL2 
+clang main.cpp game.cpp graphics.cpp  -lSDL2 
 ```
